@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "python-ml-container"
+version = "0.1.0"
+description = "Devcontainer template for Python machine learning projects"
+authors = ["Eren Akgün <erenakgun2007@hotmail.com>"]
+readme = "README.md"
+license = "GPL-2.0-only"
+repository = "https://github.com/insanolanbiri/python-ml-container"
+
+[tool.poetry.dependencies]
+python = "~3.11"
+tensorflow = {version = "^2.13.0", optional = true}
+tensorflow-cpu = {version = "^2.13.0", optional = true}
+tensorflow-metal = {version = "*", optional = true}
+
+[tool.poetry.group.dev.dependencies]
+black = {extras = ["jupyter"], version = "^23.7.0"}
+isort = "^5.10.3"
+pre-commit = "^3.3.3"
+pylint = "^2.17.5"
+jupyter = "^1.0.0"
+
+
+[tool.poetry.extras]
+cpu = ["tensorflow-cpu"]
+gpu = ["tensorflow"]
+apple = ["tensorflow", "tensorflow-metal"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pylint.'MESSAGES CONTROL']
+max-line-length = 88
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true

@@ -1,0 +1,87 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/debian
+{
+	"name": "Debian (with cuda)",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/base:bookworm",
+
+	"hostRequirements": {"gpu": true},
+	"runArgs": ["--gpus", "all"],
+
+	"initializeCommand": [
+		".devcontainer/initialize.sh",
+		"with-cuda"
+	],
+
+	"containerEnv": {
+		"CONTAINER_TYPE": "with-cuda",
+		"CUDA_CACHE_PATH":"/home/vscode/.cache/nv",
+		"KERAS_HOME": "/home/vscode/.cache/keras"
+	},
+
+	// Cached directories
+	"mounts": [
+		"source=${localWorkspaceFolder}/.devcontainer/.cache/xdg_cache,target=/home/vscode/.cache,type=bind,consistency=cached",
+		"source=${localWorkspaceFolder}/.devcontainer/.cache/var_cache,target=/var/cache,type=bind,consistency=cached"
+	],
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+	// "overrideFeatureInstallOrder": [],
+
+	"onCreateCommand": [
+		".devcontainer/configure.sh"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-toolsai.jupyter",
+				"Github.copilot",
+				"GrapeCity.gc-excelviewer",
+				"ms-python.pylint",
+				"ms-python.black-formatter",
+				"ms-python.isort"
+			],
+			"settings": {
+				"files.autoSave": "afterDelay",
+				"editor.inlineSuggest.enabled": true,
+				"pylint.importStrategy": "fromEnvironment",
+				"black-formatter.importStrategy": "fromEnvironment",
+				"isort.importStrategy": "fromEnvironment",
+				"[python]": {
+					"editor.defaultFormatter": "ms-python.black-formatter",
+					"editor.formatOnSave": true,
+					"editor.codeActionsOnSave": {
+						"source.organizeImports": true
+					}
+				},
+				"git.confirmSync": false,
+				"git.autofetch": true,
+				"jupyter.askForKernelRestart": false,
+				"notebook.output.textLineLimit": 100,
+				"explorer.confirmDragAndDrop": false,
+				"notebook.cellToolbarLocation": {
+					"default": "right",
+					"jupyter-notebook": "right"
+				},
+				"git.closeDiffOnOperation": true,
+				"editor.unicodeHighlight.allowedLocales": {
+					"tr": true
+				},
+				"python.analysis.typeCheckingMode": "basic",
+				"explorer.confirmDelete": false,
+				"git.enableSmartCommit": true,
+				"diffEditor.ignoreTrimWhitespace": false
+			}
+		}
+	}
+
+	// More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
