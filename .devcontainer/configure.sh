@@ -41,7 +41,7 @@ if [ "$CONTAINER_TYPE" = "with-cuda" ]; then
 
     sudo apt-mark hold libcudnn8
 
-    sudo aptitude install -o "Aptitude::ProblemResolver::Hints::=reject tensorrt :UNINST" --without-recommends tensorrt=8.6.0.12-1+cuda${CUDA_VERSION} -yq
+    sudo aptitude install -o "Aptitude::ProblemResolver::Hints::=reject tensorrt :UNINST" --without-recommends tensorrt=8.6.0.12-1+cuda${CUDA_VERSION} libcudnn8=${CUDNN_VERSION}.163-1+cuda${CUDA_VERSION} -yq
 fi
 
 
