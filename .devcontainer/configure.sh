@@ -16,6 +16,7 @@ sudo rm /etc/apt/apt.conf.d/docker-clean -f
 sudo apt-get update -q
 
 PYTHON_NAME="python3.11"
+POETRY_VERSION=1.6.1
 
 sudo apt-get install -yq "${PYTHON_NAME}" nano htop vim wget git gh curl ca-certificates command-not-found bash-completion
 
@@ -47,8 +48,7 @@ if [ "$CONTAINER_TYPE" = "with-cuda" ]; then
 fi
 
 
-curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.6.1 "${PYTHON_NAME}" -
-
+curl -sSL https://install.python-poetry.org | POETRY_VERSION=$POETRY_VERSION "${PYTHON_NAME}" -
 
 poetry env use "${PYTHON_NAME}"
 
