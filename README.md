@@ -6,7 +6,7 @@ The container is intended to be used with VSCode but can be used with any editor
 Using a container for development allows for a consistent development environment across different machines and operating systems.
 It also allows for easy sharing of development environments, resulting in less time spent on setting up the environment and more time spent on development.
 
-# Features
+## Features
 - VSCode configuration/extensions
 - Configuration scripts for installing software and setting up the environment
 - Nvidia CUDA and CUDNN support
