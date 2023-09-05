@@ -42,9 +42,22 @@ if [ "$CONTAINER_TYPE" = "with-cuda" ]; then
 
     sudo apt-get install -yq "cuda-libraries-${CUDA_VERSION/./-}" "libcudnn8=${CUDNN_VERSION}.*-1+cuda${CUDA_VERSION}" "cuda-nvcc-${CUDA_VERSION/./-}" aptitude
 
-    sudo apt-mark hold libcudnn8
+    # apt can't resolve the old versions of dependencies, so we use aptitude instead
+    # aptitude can't parse the version numbers, so we use apt to get the exact version numbers
+    version_regex="${CUDNN_VERSION//./\\.}\\..*-1\\+cuda${CUDA_VERSION}"
+    tensorrt_version="$(apt-cache madison tensorrt | grep -oP "$version_regex")"
+    cudnn_version="$(apt-cache madison libcudnn8 | grep -oP "$version_regex")"
 
-    sudo aptitude install -o "Aptitude::ProblemResolver::Hints::=reject tensorrt :UNINST" --without-recommends tensorrt=8.6.0.12-1+cuda${CUDA_VERSION} libcudnn8=${CUDNN_VERSION}.163-1+cuda${CUDA_VERSION} -yq
+    sudo aptitude install -o "Aptitude::ProblemResolver::Hints::=reject tensorrt :UNINST" \
+        "tensorrt=${tensorrt_version}" "libcudnn8=${cudnn_version}" \
+        --without-recommends -yq
+
+    # Mark the packages as held so that they don't get updated
+    sudo apt-mark hold libcudnn8 libcudnn8-dev libnvinfer-bin libnvinfer-dev libnvinfer-dispatch-dev \
+        libnvinfer-dispatch8 libnvinfer-headers-dev libnvinfer-headers-plugin-dev libnvinfer-lean-dev \
+        libnvinfer-lean8 libnvinfer-plugin-dev libnvinfer-plugin8 libnvinfer-samples libnvinfer-vc-plugin-dev \
+        libnvinfer-vc-plugin8 libnvinfer8 libnvonnxparsers-dev libnvonnxparsers8 libnvparsers-dev libnvparsers8 \
+        tensorrt
 fi
 
 
